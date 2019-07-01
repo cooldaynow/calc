@@ -1,0 +1,29 @@
+p {
+  color: white;
+}
+.wrap {
+  height: 100vh;
+  width:100%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  background:lightyellow;
+}
+.base {
+	width: 400px;
+	height:500px;
+  display: flex;
+  flex-direction: column;
+	background:lightgreen;
+}
+.head {
+  height: 40px;
+  width:100%;
+  display: flex;
+  justify-content: center;
+  background:black;
+  color:white;
+}
+.info {
+
+}
