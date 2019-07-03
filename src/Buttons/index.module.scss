@@ -1,0 +1,39 @@
+/* BUTTONS */
+.panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.buttons {
+  width: 100%;
+  height: 60px;
+  outline: 1px solid black;
+  font-size: 20px;
+  cursor: pointer;
+  background: #4d4d4d;
+  border: none;
+  color: white;
+  font-family: inherit;
+  &:hover {
+    outline: 1px solid white !important;
+    z-index: 2;
+    color: black !important;
+  }
+}
+.sChar {
+  background:rgb(102, 102, 102) ;
+}
+#equal {
+  grid-row: 4/6;
+  grid-column: 4;
+  height: 100%;
+  background: rgb(0, 68, 102);
+  z-index:1;
+}
+
+#AC {
+  grid-column: 1/3;
+  background: tomato;
+}
+#zero {
+  grid-column: 1/3;
+}

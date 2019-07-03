@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import styles from './index.module.scss';
+import {viewInput, delay, logicInput} from '../Checks/index.jsx';
 class Calc extends Component {
   state = {
     buttons: [
@@ -30,8 +31,8 @@ class Calc extends Component {
       lastChar,
       pChar,
     };
-    let [inp, val] = this.logicInput(inputVariables);
-    let renderInput = this.viewInput(inputVariables);
+    let [inp, val] = logicInput(inputVariables);
+    let renderInput = viewInput(inputVariables);
 
     this.setState(state => ({
       input: inp + val,
@@ -39,115 +40,17 @@ class Calc extends Component {
       renderInput: renderInput,
     }));
   };
-
-  viewInput = ({value, input, last, sChar, pChar, lastChar}) => {
-    /* VIEW INPUT */
-    //длина не в допуске
-    if (last.length > 10 && !sChar.test(value)) {
-      input = last;
-      return input;
-    }
-
-    //если приходит число
-    if (/[0-9]/.test(value)) {
-      //если число или число точка или пустая строка
-      if (/\d+|\d+\.|(^$)/.test(last)) {
-        input = last + value;
-      }
-      if (input[0] === '0' && input.length < 3) {
-        input = value;
-      }
-    }
-    //если пришла точка
-    if (/\./.test(value)) {
-      //если число и точка или пустая строка
-      if (/\d+\.|(^$)/.test(last)) {
-        input = last;
-      }
-      if (/^\d+$/.test(last)) {
-        input = last + value;
-      }
-      if (sChar.test(lastChar)) {
-        input = lastChar;
-      }
-      if (last.length > 9) {
-        input = input.slice(0, -1);
-      }
-    }
-    //приходит спец знак
-    if (sChar.test(value)) {
-      if (/\d+|\d+\./.test(last) || sChar.test(lastChar)) {
-        input = value;
-      }
-      if (lastChar === '.') {
-        input = last;
-      }
-    }
-    return input;
-  };
-  logicInput = ({value, input, last, sChar, pChar, lastChar}) => {
-    /* LOGIC INPUT */
-    //значение спец знак
-    if (sChar.test(value)) {
-      //последний спецзнак меняем знак
-      if (sChar.test(lastChar)) {
-        input = input.slice(0, -1);
-      }
-      //последний знак точка
-      if (lastChar === '.') {
-        value = '';
-      }
-    }
-    //пришла точка
-    if (/\./.test(value)) {
-      if (
-        pChar.test(last) ||
-        lastChar === '.' ||
-        sChar.test(lastChar) ||
-        last.length > 9
-      ) {
-        value = '';
-      }
-    }
-
-    //если пришел 0
-    if (value === '0') {
-      if (input.length === 1 && lastChar === '0') {
-        value = '';
-      }
-    }
-    //если пришло число
-    if (/[1-9]/.test(value) && input.length === 1) {
-      if (input[0] === '0') {
-        input = input.slice(1);
-      }
-    }
-    //если пишем нули подряд
-    if (/^0$/.test(last) && /[0-9]/.test(value) && input.length !== 0) {
-      value = '';
-    }
-    //если длина не в допуске
-    if (last.length > 10 && !sChar.test(value)) {
-      this.viewErr(last, input);
-      value = '';
-    }
-    return [input, value];
-  };
+   
   viewErr = (last, input) => {
-    this.delay(300)
+    let err = 'DIGIT LIMIT MET';
+    delay(300)
       .then(() => {
-        this.setState(state => ({info: 'digit limit met'.toUpperCase()}));
-
-        return this.delay(800);
+        this.setState(state => ({info: err}));
+        return delay(800);
       })
       .then(() => {
         this.setState(state => ({info: input}));
       });
-  };
-  delay = time => {
-    return new Promise((resolve, reject) => {
-      setTimeout(resolve, time);
-    });
   };
 
   equal = () => {
@@ -228,11 +131,17 @@ class Calc extends Component {
             <div className={styles.head}>
               <span> Simple Calc </span>
             </div>
-            <div className={styles.info}>{this.state.info}</div>
-            <div className={styles.wrap__input}>
-              <div className={styles.input}>{this.state.renderInput}</div>
+            <div className={styles.info}>
+              {this.state.info}
             </div>
-            <div className={styles.panel}>{this.renderButtons()}</div>
+            <div className={styles.wrap__input}>
+              <div className={styles.input}>
+                {this.state.renderInput}
+              </div>
+            </div>
+            <div className={styles.panel}>
+              {this.renderButtons()}
+            </div>
           </div>
         </div>
       </div>
