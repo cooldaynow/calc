@@ -8,6 +8,7 @@ import {
   equalLogic,
 } from '../Checks/index.jsx';
 import Buttons from '../Buttons';
+import Navigation from '../Navigation';
 
 class Calc extends Component {
   state = {
@@ -55,11 +56,9 @@ class Calc extends Component {
   render() {
     return (
       <div className={styles.wrap}>
+        <Navigation />
         <div className={styles.frame}>
           <div className={styles.base}>
-            <div className={styles.head}>
-              <span> Simple Calc </span>
-            </div>
             <div className={styles.info}>{this.state.info}</div>
             <div className={styles.wrap__input}>
               <div className={styles.input}>{this.state.renderInput}</div>

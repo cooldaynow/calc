@@ -14,30 +14,23 @@ body {
 }
 /* CONTAINER */
 .base {
-  width: 330px;
-  padding: 10px;
+  width:100%;
+  padding: 5px;
   background: black;
   display: flex;
   flex-direction: column;
 }
 /* FRAME */
 .frame {
-  width: 350px;
-  min-height: 420px;
+  min-width: 350px;
+  max-width:350px;
+  max-height: 420px;
   background: black;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-/* TOP */
-.head {
-  height: 40px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  background: black;
-  color: white;
-}
+
 /* INFO */
 .info {
   width: 100%;
