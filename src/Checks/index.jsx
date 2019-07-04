@@ -16,8 +16,10 @@ export const logicVariables = (input, value) => {
 
   return inputVariables;
 };
-export const logicInput = ({value, input, last, sChar, pChar, lastChar}) => {
-  /* LOGIC INPUT */
+export const logicInput = (
+  {value, input, last, sChar, pChar, lastChar},
+  viewErr,
+) => {
   //значение спец знак
   if (sChar.test(value)) {
     //последний спецзнак меняем знак
@@ -41,27 +43,28 @@ export const logicInput = ({value, input, last, sChar, pChar, lastChar}) => {
     }
   }
 
-  //если пришел 0
+  //пришел 0
   if (value === '0') {
     if (input.length === 1 && lastChar === '0') {
       value = '';
     }
   }
-  //если пришло число
+  //пришло число
   if (/[1-9]/.test(value) && input.length === 1) {
     if (input[0] === '0') {
       input = input.slice(1);
     }
   }
-  //если пишем нули подряд
+  //пишем нули подряд
   if (/^0$/.test(last) && /[0-9]/.test(value) && input.length !== 0) {
     value = '';
   }
-  //если длина не в допуске
+  //длина не в допуске
   if (last.length > 10 && !sChar.test(value)) {
+    //выводим ошибку
+    viewErr(input);
     value = '';
   }
-
   return input + value;
 };
 export const delay = time => {
@@ -71,14 +74,13 @@ export const delay = time => {
 };
 
 export const viewInput = ({value, input, last, sChar, pChar, lastChar}) => {
-  /* VIEW INPUT */
   //длина не в допуске
   if (last.length > 10 && !sChar.test(value)) {
     input = last;
     return input;
   }
 
-  //если приходит число
+  //приходит число
   if (/[0-9]/.test(value)) {
     //если число или число точка или пустая строка
     if (/\d+|\d+\.|(^$)/.test(last)) {
@@ -88,9 +90,9 @@ export const viewInput = ({value, input, last, sChar, pChar, lastChar}) => {
       input = value;
     }
   }
-  //если пришла точка
+  //пришла точка
   if (/\./.test(value)) {
-    //если число и точка или пустая строка
+    //число и точка или пустая строка
     if (/\d+\.|(^$)/.test(last)) {
       input = last;
     }
@@ -122,8 +124,10 @@ export const equalLogic = input => {
     if (/\.|\*|\+|-|\//.test(input.slice(-1))) {
       input = input.slice(0, -1);
     }
+    // 0/0
     if (Number.isNaN(eval(input))) {
       info = 'This calculator does not allow to divide by zero: (';
+      // dig/0
     } else if (!isFinite(eval(input))) {
       info = 'To infinity... and beyond :)';
     } else {
@@ -132,14 +136,12 @@ export const equalLogic = input => {
       renderInput = result;
     }
   } catch (err) {
-    info = 'Please input correct values';
-    console.log(err.name);
+    info = 'Please input correct values: ' + err.name;
   } finally {
     return () => ({
-          input: '0',
-          info: info,
-          renderInput: renderInput,
+      input: '0',
+      info: info,
+      renderInput: renderInput,
     });
   }
-
 };

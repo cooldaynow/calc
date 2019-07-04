@@ -18,7 +18,8 @@ class Calc extends Component {
   handleButtons = ev => {
     let value = ev.target.value;
     let input = this.state.input;
-    let output = logicInput(logicVariables(input, value));
+    let viewErr = this.viewErr;
+    let output = logicInput(logicVariables(input, value), viewErr);
     let renderInput = viewInput(logicVariables(input, value));
 
     this.setState(state => ({
@@ -28,7 +29,7 @@ class Calc extends Component {
     }));
   };
 
-  /* viewErr = (last, input) => {
+  viewErr = input => {
     let err = 'DIGIT LIMIT MET';
     delay(300)
       .then(() => {
@@ -38,11 +39,11 @@ class Calc extends Component {
       .then(() => {
         this.setState(state => ({info: input}));
       });
-  };*/
+  };
 
   equal = () => {
     let input = this.state.input;
-    this.setState(equalLogic(input))
+    this.setState(equalLogic(input));
   };
   ac = () => {
     this.setState({
@@ -63,7 +64,12 @@ class Calc extends Component {
             <div className={styles.wrap__input}>
               <div className={styles.input}>{this.state.renderInput}</div>
             </div>
-            <Buttons handleButtons={this.handleButtons} equal={this.equal} />
+            <Buttons
+              handleButtons={this.handleButtons}
+              equal={this.equal}
+              ac={this.ac}
+              viewErr={this.viewErr}
+            />
           </div>
         </div>
       </div>

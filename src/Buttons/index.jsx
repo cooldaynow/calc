@@ -22,7 +22,7 @@ class Buttons extends Component {
             elem === '='
               ? this.props.equal
               : elem === 'AC'
-              ? this.ac
+              ? this.props.ac
               : this.props.handleButtons
           }
           id={
